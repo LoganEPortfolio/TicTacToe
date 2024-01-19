@@ -1,4 +1,4 @@
-
+import random
 
 is_gameover = False
 
@@ -21,6 +21,14 @@ def is_taken(location):
     else:
         return False
     
+
+def computer_random():
+    comp_choice = random.randint(1,9)
+    while is_taken(game_board[comp_choice-1]):
+        comp_choice = random.randint(1,9)
+    print(f"Computer chose {comp_choice}")
+    return comp_choice
+
 
 def check_winner():
     global is_gameover
@@ -49,16 +57,6 @@ def check_winner():
         is_gameover = True
         print(f"{game_board[2]} Wins!")
     
-    
-# def take_square(player, location):
-#     if not is_taken(game_board[location-1]):
-#         game_board[location-1] = player
-#         display_board()
-#         return False
-#     else:
-#         print("Thats already taken, select again.")
-#         return True
-        
 
 def player_move(player_shape):
     player_input = int(input(f'\n\n{player_shape}: Select which spot you want to place your choice. Type 1-9: '))
@@ -75,23 +73,12 @@ def take_square(player, location):
 
 display_board()
 
-# player1_shape = input("Do you want to be X or O? Type 'X' or 'O': ")
-
-# if player1_shape == 'X':
-#     player2_shape = 'O'
-# else:
-#     player2_shape = 'X'
-
-
-
-#num_players = int(input("How many players? Type 1 or 2: "))
+num_players = int(input("How many players? Type 1 or 2: "))
 player1_shape = input("Do you want to be X or O? Type 'X' or 'O': ")
 if player1_shape == 'X':
     player2_shape = 'O'
 else:
     player2_shape = 'X'
-
-
 
 
 while not is_gameover:
@@ -100,7 +87,10 @@ while not is_gameover:
     check_winner()
     if is_gameover == True:
         break
-    player2_input = player_move(player2_shape)
+    if num_players == 1:
+        player2_input = computer_random()
+    else:
+        player2_input = player_move(player2_shape)
     take_square(player2_shape, player2_input)
     check_winner()
 
